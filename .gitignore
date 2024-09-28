@@ -2,3 +2,7 @@ target/
 classes/
 webapp/WEB-INF/classes/
 webapp/assets
+webapp/assets/index.html
+local_tomcat/logs/
+local_tomcat/webapps/
+UX/react-api-tester/dist/
