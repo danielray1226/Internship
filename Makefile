@@ -11,6 +11,7 @@ ALL_LIBS_LIST:=$(shell find $(ROOT)/webapp/WEB-INF/lib $(ROOT)/SERVER -name '*.j
 #$(info "All Libs List " $(ALL_LIBS_LIST))
 
 ux:
+	@cd ${ROOT}/UX/react-api-tester && npm install
 	@cd ${ROOT}/UX/react-api-tester && npm run build
 	@rm -f ${ROOT}/webapp/index.html 
 	@rm -rf ${ROOT}/webapp/assets 
