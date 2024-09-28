@@ -2,6 +2,7 @@
 
 
 MYDIR=$(dirname $0)
+rm -rf ${MYDIR}/local_tomcat/logs/*
 
 CLASSPATH=${MYDIR}/SERVER/apache-tomcat-9.0.48/bin/bootstrap.jar:${MYDIR}/SERVER/apache-tomcat-9.0.48/bin/commons-daemon.jar:${MYDIR}/SERVER/apache-tomcat-9.0.48/bin/tomcat-juli.jar
 
