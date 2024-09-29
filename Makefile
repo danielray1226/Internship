@@ -11,6 +11,7 @@ ALL_LIBS_LIST:=$(shell find $(ROOT)/webapp/WEB-INF/lib $(ROOT)/SERVER -name '*.j
 #$(info "All Libs List " $(ALL_LIBS_LIST))
 
 ux:
+	@cd ${ROOT}/UX/react-api-tester && npm install
 	@cd ${ROOT}/UX/react-api-tester && npm run build
 	@rm -f ${ROOT}/webapp/index.html 
 	@rm -rf ${ROOT}/webapp/assets 
@@ -22,10 +23,10 @@ java-compile:
 	@echo Compile java
 	@rm -rf $(JAVA_BUILD)
 	@mkdir -p $(JAVA_BUILD)
-	rm -f $(JAVA_BUILD)/java_list
+	@rm -f $(JAVA_BUILD)/java_list
 	@echo JAVAC VERSION
 	$(JAVAC) -version
-	find $(SRC_JAVA) -name '*.java' > $(JAVA_BUILD)/java_list
+	@find $(SRC_JAVA) -name '*.java' > $(JAVA_BUILD)/java_list
 	@$(JAVAC) -encoding utf8 -source $(JVM_VERSION) -target $(JVM_VERSION) \
 		-cp $(ALL_LIBS_LIST) \
 		-d $(JAVA_BUILD) @$(JAVA_BUILD)/java_list
@@ -35,6 +36,10 @@ war:  java-compile ux
 	rm -rf $(ROOT)/target
 	mkdir -p $(ROOT)/target
 	cd $(ROOT)/webapp && zip -qr $(ROOT)/target/ROOT.war .
-	
-	
-.PHONY: ux java-compile war
+	@rm -rf $(ROOT)/local_tomcat/webapps/*
+	cp $(ROOT)/target/ROOT.war $(ROOT)/local_tomcat/webapps/
+
+local_tomcat: war
+	$(ROOT)/start_local_tomcat.sh
+
+.PHONY: ux java-compile war local_tomcat
