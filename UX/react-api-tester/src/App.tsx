@@ -95,7 +95,7 @@ function App() {
         </Alert>
       )}
       <p>
-        Hello {loginData.name}
+        Hello, {loginData.name}
         <br />
       </p>
       <MyButton onClick={logoff}>
