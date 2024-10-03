@@ -25,7 +25,7 @@ function ListGroup({ items, heading, onSelectItem }: Props) {
             onClick={() => {
               setSelectedIndex(index);
               setSelectedIndex(index);
-              onSelectItem(heading, index, item);
+              if (onSelectItem != null) onSelectItem(heading, index, item);
             }}
           >
             {item}
