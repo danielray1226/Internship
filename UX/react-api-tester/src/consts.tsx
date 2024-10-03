@@ -6,6 +6,10 @@ export function getLoginUrl() {
   if (import.meta.env.MODE != "development") return "/login";
   return "http://localhost:8000/login";
 }
+export function getAPICallerUrl() {
+  if (import.meta.env.MODE != "development") return "/APICaller";
+  return "http://localhost:8000/APICaller";
+}
 
 export function getLogoffUrl() {
   console.log("MODE: " + import.meta.env.MODE);
