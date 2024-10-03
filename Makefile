@@ -35,9 +35,9 @@ java-compile:
 war:  java-compile ux
 	rm -rf $(ROOT)/target
 	mkdir -p $(ROOT)/target
-	cd $(ROOT)/webapp && zip -qr $(ROOT)/target/ROOT.war .
-	@rm -rf $(ROOT)/local_tomcat/webapps/*
+	rm -rf $(ROOT)/local_tomcat/webapps
 	mkdir -p $(ROOT)/local_tomcat/webapps
+	cd $(ROOT)/webapp && zip -qr $(ROOT)/target/ROOT.war .
 	cp $(ROOT)/target/ROOT.war $(ROOT)/local_tomcat/webapps/
 
 local_tomcat: war
