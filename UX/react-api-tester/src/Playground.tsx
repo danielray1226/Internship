@@ -1,13 +1,4 @@
 import ApiUI from "./ApiUI";
-
 function Playground() {
-  return (
-  <>
-    <fieldset>
-        <legend>Playground</legend>
-        <ApiUI/>
-    </fieldset>
-  </>
-  );
+  return <ApiUI />;
 }
-export default Playground;

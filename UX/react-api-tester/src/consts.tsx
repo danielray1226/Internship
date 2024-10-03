@@ -15,3 +15,6 @@ export function getLogoffUrl() {
   if (import.meta.env.MODE != "development") return "/logoff";
   return "http://localhost:8000/logoff";
 }
+export function isDev() {
+  return import.meta.env.MODE == "development";
+}
