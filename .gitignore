@@ -2,6 +2,7 @@ target/
 classes/
 webapp/WEB-INF/classes/
 webapp/assets
+UX/react-api-tester/src/EPlayground.tsx
 webapp/assets/index.html
 local_tomcat/logs/
 local_tomcat/webapps/
