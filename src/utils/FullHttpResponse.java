@@ -99,6 +99,9 @@ public class FullHttpResponse {
 	protected void setException(Exception ex) {
 		if (exception==null) exception=ex;
 	}
+	public Exception getException() {
+		return exception;
+	}
 
 	
 
