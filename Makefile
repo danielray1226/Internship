@@ -10,6 +10,16 @@ JAVA_BUILD:=$(ROOT)/webapp/WEB-INF/classes
 ALL_LIBS_LIST:=$(shell find $(ROOT)/webapp/WEB-INF/lib $(ROOT)/SERVER -name '*.jar' -printf '%p:')
 #$(info "All Libs List " $(ALL_LIBS_LIST))
 
+all: war
+
+local_ux: 
+	@cd ${ROOT}/UX/react-api-tester && npm install
+	@echo "stopping old vite"
+	@bash -c 'pid=`fuser 5173/tcp 2>/dev/null | tr -d '[:blank:]'` && test -z "$$pid" || { echo "killing $$pid"; kill -SIGKILL $$pid; }'
+	@echo "starting new vite"
+	@cd ${ROOT}/UX/react-api-tester && bash -c "npm run dev &"
+	@echo "starting insecure chromium"
+	@${ROOT}/start_chromium.sh "http://localhost:5173/"
 ux:
 	@cd ${ROOT}/UX/react-api-tester && npm install
 	@cd ${ROOT}/UX/react-api-tester && npm run build
@@ -43,4 +53,4 @@ war:  java-compile ux
 local_tomcat: war
 	$(ROOT)/start_local_tomcat.sh
 
-.PHONY: ux java-compile war local_tomcat
+.PHONY: all ux java-compile war local_tomcat
