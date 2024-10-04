@@ -1,26 +1,41 @@
 package app;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.Iterator;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
+import utils.HttpConnector;
 import utils.JsonUtils;
 
 public class App {
 	final String root;
+	final JsonObject openApi;
+	final HttpConnector httpConnector=new HttpConnector();
+	
 	private App(String r) {
 		this.root=r;
+		try {
+			openApi= JsonParser.parseString(new String(Files.readAllBytes(new File(root+"/WEB-INF/data/openapi.json").toPath()), StandardCharsets.UTF_8)).getAsJsonObject();
+		} catch (Exception ex) {
+			System.err.println("Failed to load/parse openapi.json");
+			throw new RuntimeException("Failed to load/parse openapi.json : "+ex.getMessage());
+		}	
+
 	}
 	private void init() {
-		// to init stuff
 	}
 	private static class Helper {
 		final static App app=initApp();
@@ -31,8 +46,21 @@ public class App {
 		}
 	}
 	public static App getApp() {return Helper.app;}
-	public static String getAppCookieName() {return "api-tester";}
-	
+	public String getAppCookieName() {return "api-tester";}
+	public JsonObject getOpenApi() {return getApp().openApi;}
+	public Cookie getRequestCookie(HttpServletRequest request) {
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie c : cookies) {
+				if (getAppCookieName().equals(c.getName())) {
+					return c;
+				}
+			}
+		}
+		return null;
+	}
+	public String getRoot() {return root;}
+	public HttpConnector getHttpConnector() {return httpConnector;}
 	
 	synchronized public JsonObject checkUserByCookie(String cookie) throws IOException {
 		// poor's man database
@@ -74,6 +102,7 @@ public class App {
 		Files.write(new File(root+"/WEB-INF/data/cookiesdb.json").toPath(),cookies.toString().getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);
 		return removed!=null;
 	}
+
 	
 	
 }

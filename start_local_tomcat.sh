@@ -10,6 +10,8 @@ mkdir -p ${MYDIR}/local_tomcat/webapps/
 mkdir -p ${MYDIR}/local_tomcat/temp/
 mkdir -p ${MYDIR}/local_tomcat/work/
 
+pid=`fuser 8000/tcp 2>/dev/null | tr -d '[:blank:]'` && test -z "$pid" || { echo "killing $pid"; kill -SIGKILL $pid; }
+
 java -Dcatalina.base=${MYDIR}/local_tomcat \
 	-Dcatalina.home=${MYDIR}/SERVER/apache-tomcat-9.0.48 \
 	--add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED \

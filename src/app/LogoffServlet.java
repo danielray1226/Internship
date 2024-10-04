@@ -1,20 +1,12 @@
 package app;
 
 import java.io.IOException;
-import java.util.UUID;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import utils.JsonUtils;
 
 /**
  * Servlet implementation class LoginServlet
@@ -35,16 +27,7 @@ public class LogoffServlet extends HttpServlet {
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Cookie appCookie = null;
-		Cookie[] cookies = request.getCookies();
-		if (cookies != null) {
-			for (Cookie c : cookies) {
-				if (App.getAppCookieName().equals(c.getName())) {
-					appCookie = c;
-					break;
-				}
-			}
-		}
+		Cookie appCookie = App.getApp().getRequestCookie(request);
 		if (appCookie!=null) {
 			if (App.getApp().removeCookie(appCookie.getValue())) {
 				response.setStatus(200);

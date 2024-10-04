@@ -14,8 +14,12 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 
 import org.apache.hc.client5.http.ContextBuilder;
+import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPatch;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpPut;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
 import org.apache.hc.client5.http.config.ConnectionConfig;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -136,11 +140,20 @@ public class HttpConnector {
 	}
 
 	public FullHttpResponse callPost(String url, String contentType, byte[] payload, BasicHeader... headers) {
+		return callMethod("post", url, contentType, payload, headers); 
+	}
+	public FullHttpResponse callMethod(String method, String url, String contentType, byte[] payload, BasicHeader... headers) {
 		FullHttpResponse fullResponse = new FullHttpResponse();
 		try {
 			BasicHttpEntity entity = new BasicHttpEntity(new ByteArrayInputStream(payload),
 					ContentType.create(contentType));
-			HttpPost post = new HttpPost(url);
+			HttpUriRequestBase post = null;
+			if ("post".equalsIgnoreCase(method) || method==null) post=new HttpPost(url);
+			else if ("delete".equalsIgnoreCase(method)) post=new HttpDelete(url);
+			else if ("patch".equalsIgnoreCase(method)) post=new HttpPatch(url);
+			else if ("put".equalsIgnoreCase(method)) post=new HttpPut(url);
+			else throw new RuntimeException("Method "+method+" is not implemented");
+			
 			post.setEntity(entity);
 			boolean hasAccept = false;
 			for (BasicHeader bh : headers) {

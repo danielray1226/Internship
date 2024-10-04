@@ -29,29 +29,20 @@ public class LoginServlet extends HttpServlet {
 	public LoginServlet() {
 	}
 
+
 	/**
 	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void service(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		Cookie appCookie = null;
-		Cookie[] cookies = request.getCookies();
-		if (cookies != null) {
-			for (Cookie c : cookies) {
-				if (App.getAppCookieName().equals(c.getName())) {
-					appCookie = c;
-					break;
-				}
-			}
-		}
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Cookie appCookie = App.getApp().getRequestCookie(request);
 		JsonObject userInfo = null;
 		if (appCookie != null) {
 			userInfo = App.getApp().checkUserByCookie(appCookie.getValue());
 		}
 		if (userInfo == null || appCookie == null) {
 			// First time user, or unknown cookie
-			appCookie = new Cookie(App.getAppCookieName(), UUID.randomUUID().toString());
+			appCookie = new Cookie(App.getApp().getAppCookieName(), UUID.randomUUID().toString());
 			appCookie.setHttpOnly(false); // should we allow js to access it?
 			appCookie.setMaxAge(365 * 24 * 3600);
 			response.addCookie(appCookie); // Add it back to the response
