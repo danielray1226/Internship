@@ -4,4 +4,4 @@ import "bootstrap/dist/css/bootstrap.css";
 import Playground from "./Playground.tsx";
 
 createRoot(document.getElementById("root")!).render(<App />);
-createRoot(document.getElementById("playground")!).render(<Playground />);
+//createRoot(document.getElementById("playground")!).render(<Playground />);
