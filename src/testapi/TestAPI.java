@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Enumeration;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.servlet.ServletException;
@@ -44,11 +45,13 @@ public class TestAPI extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
-		System.out.println("Path: " + request.getPathInfo());
-		System.out.print(method);
+		System.err.println("Path: " + request.getPathInfo());
+		System.err.print(method);
 		
 		// Lets try to generate a file path, we can use for testing
 		String testFileName=method.toLowerCase()+request.getPathInfo();
+		
+		
 		
 		Map<String, String[]> params = request.getParameterMap();
 		for (Entry<String, String[]> entry : params.entrySet()) {
@@ -56,9 +59,27 @@ public class TestAPI extends HttpServlet {
 			String[] values=entry.getValue();
 			for (String v : values) {
 				testFileName+= ("_"+param+"_"+v);
-				System.out.println(param+" = "+v);
+				System.err.println(param+" = "+v);
+				
 			}
 		}
+		
+		String tokenString="";
+		Enumeration<String> headerNames = request.getHeaderNames();
+		while (headerNames.hasMoreElements()) {
+			String name=headerNames.nextElement();
+			Enumeration<String> headers = request.getHeaders(name);
+			while (headers.hasMoreElements()) {
+				String value=headers.nextElement();
+				System.err.println("HEADER "+name+"="+value);
+				if ("authorization".equalsIgnoreCase(name)) tokenString=value;
+			}
+		}
+		String[] tokenParts = tokenString.split("\\s+");
+		String token=tokenParts.length>1?tokenParts[1]:tokenString;
+		testFileName+= "_"+token;
+		
+		
 		testFileName=testFileName.replaceAll("/", "_");
 		testFileName=testFileName.replaceAll(" ", "");
 		
@@ -70,7 +91,7 @@ public class TestAPI extends HttpServlet {
 			JsonElement testReply = JsonParser.parseString(new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8));
 			int status=JsonUtils.getInteger(testReply, "status");
 			JsonElement data = JsonUtils.getJsonElement(testReply, "data");
-			response.getWriter().write(data.toString());
+			if (data!=null) response.getWriter().write(data.toString());
 			response.setStatus(status);
 		} else {
 			response.setStatus(404);

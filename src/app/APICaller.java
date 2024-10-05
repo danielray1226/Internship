@@ -34,7 +34,7 @@ public class APICaller extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
     
-    final static String TEST_API_SERVER_URL="http://localhost:8000/TestAPI";
+    
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
@@ -59,11 +59,29 @@ public class APICaller extends HttpServlet {
 				"body" : "POST body as a string or json"
 			}
 			Upon receiving, reconcile with openapi.json, and call the test server
+			Sends back results, like:
+			{
+				"url":"http://localhost:8000/TestAPI/artifact-fields/123/options?project=FooBar&type=Some+Type",
+				"statusCode":200,"contentType":"application/json;charset=UTF-8",
+				"success":true,
+				"data":{
+					"items":[{"id":"abc","label":"Foo"},{"id":"xyz","label":"Bar"}],
+					"next_cursor":"bzzzzz"
+				}
+			}
+			Assuming api server produced response like:
+			{
+				"items":[{"id":"abc","label":"Foo"},{"id":"xyz","label":"Bar"}],
+				"next_cursor":"bzzzzz"
+			}
 			 */
 			
 			JsonElement req = JsonParser.parseReader(request.getReader());
 			String path=JsonUtils.getString(req, "path");
 			if (path==null) throw new RuntimeException("No \"path\" in request: "+JsonUtils.prettyPrint(req));
+			String serverUrl=JsonUtils.getString(req, "serverUrl");
+			if (serverUrl==null) throw new RuntimeException("No \"serverUrl\" in request: "+JsonUtils.prettyPrint(req));
+			
 			String method=JsonUtils.getString(req, "method");
 			if (method==null) throw new RuntimeException("No \"method\" in request: "+JsonUtils.prettyPrint(req));
 			path=path.toLowerCase();
@@ -132,10 +150,13 @@ public class APICaller extends HttpServlet {
 				//response.setStatus(403);
 			}
 			String myAutorizationToken=JsonUtils.getString(userInfo, "apiToken");
-			if (myAutorizationToken==null) myAutorizationToken="DevTestingOnly";
+			if (myAutorizationToken==null) {
+				throw new RuntimeException("No authorization token for the user");
+				//myAutorizationToken="DevTestingOnly";
+			}
 			
 			// Time to make actual call
-			String url=TEST_API_SERVER_URL+pathUrl;
+			String url=serverUrl+pathUrl;
 			if (!paramsUrl.isEmpty()) {
 				url+="?";
 				url+=paramsUrl;
@@ -148,7 +169,7 @@ public class APICaller extends HttpServlet {
 			
 			FullHttpResponse apiResponse=null;
 			if (method.equals("get")) {
-				apiResponse=httpConnector.callGet(url, new BasicHeader("Autorization", "Bearer "+myAutorizationToken),new BasicHeader("User-Agent", "My API Tester"));
+				apiResponse=httpConnector.callGet(url, new BasicHeader("Authorization", "Bearer "+myAutorizationToken),new BasicHeader("User-Agent", "My API Tester"));
 			} else {
 				String body=JsonUtils.getString(req, "body");
 				if (body==null) {
@@ -176,7 +197,8 @@ public class APICaller extends HttpServlet {
 						respObject.add("data", jsonData);
 					} catch (Exception ex) {
 						respObject.addProperty("success", false);
-						respObject.addProperty("error", ex.getMessage());
+						respObject.addProperty("error", "Malformed json");
+						respObject.addProperty("rawData", new String(data, StandardCharsets.UTF_8));
 					}
 				} else {
 					respObject.add("data", JsonNull.INSTANCE);
