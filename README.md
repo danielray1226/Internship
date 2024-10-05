@@ -28,7 +28,7 @@ local_tomcat - configuration to start a local instance of tomcat
 ```
 
 
-### To Install  Latest node on ubunty or derivative (e.g. Linux Mint)
+## To Install  Latest node on ubunty or derivative (e.g. Linux Mint)
 ```
 sudo npm cache clean -f
 sudo npm install -g n
@@ -36,7 +36,7 @@ sudo n stable
 ```
 
 
-### Makefile targets
+## Makefile targets
 
 ```
 local_ux: 
@@ -72,8 +72,23 @@ local_tomcat:
 	Or for remote debuging
 ```
 
-### Java libraries
+## Java libraries
 
-Java libraries are hand downloaded to ``webapp/WEB-INF/lib`` directory.
+Java libraries are hand downloaded from maven central to ``webapp/WEB-INF/lib`` directory.
 Source jar packages are hand downloaded to ``libsrc`` directory
+
+
+## Eclipse
+
+### Validation
+Turn off the language servers in Window ->  Preferences -> Language Servers. All, but HTML
+
+### Eclipse Web Tools Project (WTP)
+Disable TSX validations
+![Disable TSX validations](./disable-eclipse-validation.png "Disable TSX validations")
+
+
+
+
+
 
