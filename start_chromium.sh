@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 DEFAULT_URL="http://localhost:5173/"
 URL="${1:-$DEFAULT_URL}"
