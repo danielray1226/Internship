@@ -43,7 +43,7 @@ function ListGroup({ items, heading, onSelectItem, defaultSelection }: Props) {
             }
             onClick={() => {
               setSelectedIndex(index);
-              if (onSelectItem != null && onSelectItem)
+              if (onSelectItem)
                 onSelectItem(heading, index, item);
             }}
           >

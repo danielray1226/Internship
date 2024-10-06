@@ -3,7 +3,7 @@ import Alert from "./components/Alert";
 import MyButton from "./components/MyButton";
 import { useState } from "react";
 import FetchExample from "./components/FetchExample";
-import LoginDialog from "./components/LoginDialog";
+import LoginDialog from "./components/LoginDialogue";
 import { getLogoffUrl } from "./consts";
 
 function plain() {

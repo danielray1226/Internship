@@ -59,6 +59,7 @@ export function callApi(
   /*
 			tomcat will expect following json object, e.g.:
 			{
+        "serverUrl" : "http://example.com",
 				"path" : "/artifact-fields/{field-id}/options",
 				"method" : "get",
 				"parameters" : [

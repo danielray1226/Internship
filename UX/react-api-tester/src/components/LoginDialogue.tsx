@@ -21,7 +21,7 @@ interface Props {
   onLogin: (loginData: Object) => void;
 }
 
-export default function LoginDialog({ onLogin }: Props) {
+export default function LoginDialogue({ onLogin }: Props) {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [alerted, setAlerted] = useState(false);
