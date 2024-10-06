@@ -3,7 +3,7 @@ import Alert from "./components/Alert";
 import MyButton from "./components/MyButton";
 import { useState } from "react";
 import FetchExample from "./components/FetchExample";
-import LoginDialog from "./components/LoginDialog";
+import LoginDialogue from "./components/LoginDialogue";
 import { getLogoffUrl } from "./consts";
 import ApiUI from "./ApiUI";
 
@@ -20,7 +20,7 @@ function callLogoff(onLogoffCompleted: () => void) {
   })
     .then((response) => {
       if (response.status === 200) console.log("Logged off indeed");
-      else console.log("Hmmm didnt actuall logged off");
+      else console.log("Hmmm didnt actually log off");
       onLogoffCompleted();
     })
     .catch((e) => {
@@ -34,7 +34,7 @@ function App() {
   const [loginData, setLoginData] = useState({});
   const [logingOff, setLoginOff] = useState(false);
 
-  console.log(JSON.stringify(loginData));
+  console.log("login data in beginning of app", JSON.stringify(loginData));
 
   const logoff = () => {
     setLoginOff(true);
@@ -53,11 +53,11 @@ function App() {
 
   if (!authenticated)
     return (
-      <LoginDialog
+      <LoginDialogue
         onLogin={(retrievedloginData) => {
           setAuthenticated(true);
           setLoginData(retrievedloginData);
-          console.log("SAVED loginData: " + JSON.stringify(retrievedloginData));
+          console.log("FETCHED loginData: " + JSON.stringify(retrievedloginData));
         }}
       />
     );
