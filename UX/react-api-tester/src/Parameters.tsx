@@ -13,6 +13,14 @@ function Parameters({ params, onParamsChange }: ParamProps) {
     const param = params[i];
     const required = param["required"];
     const name = param["name"];
+    console.log(
+      "calculating style for index ",
+      i,
+      ", parameter ",
+      params[i],
+      ", required param ",
+      param.required
+    );
     const currentValue = allValues[name];
     var style = "form-control";
     if (!currentValue && required) style += " is-invalid";

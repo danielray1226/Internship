@@ -3,6 +3,7 @@ import MyButton from "./components/MyButton";
 import { callApi, loadOpenApi } from "./consts";
 import { useEffect, useState } from "react";
 import Parameters from "./Parameters";
+import ServerResults from "./ServerResults";
 
 function ApiUI() {
   const [openApi, setOpenApi] = useState();
@@ -45,6 +46,7 @@ function ApiUI() {
     setOpenApiError(ex);
   }
   function onParamsChange(valid: boolean, parameters: Object) {
+    //console.log("On Parameter Change: is valid: ", valid, ", got parameters as: ", parameters)
     setParamsValid(valid);
     setParameters(parameters);
   }
@@ -203,8 +205,16 @@ function ApiUI() {
         <>
           <br />
           <div className="container">{JSON.stringify(serverCallResult)}</div>
+          {/*<Component to display neatly =openAPI =severCallResult/>*/}
+          <ServerResults
+            result={serverCallResult}
+            openApi={openApi}
+            path={myPath}
+            httpMethod={myHttpMethod}
+          />
         </>
       )}
+
       {serverCallError && (
         <>
           <br />

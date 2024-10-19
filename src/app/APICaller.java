@@ -56,7 +56,8 @@ public class APICaller extends HttpServlet {
 						"value": "FooBar"
 					}
 				],
-				"body" : "POST body as a string or json"
+				"body" : "POST body as a string or json",
+				"serverUrl": "http://example.com"
 			}
 			Upon receiving, reconcile with openapi.json, and call the test server
 			Sends back results, like:

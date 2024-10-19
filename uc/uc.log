@@ -1,0 +1,42 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.2)
+
+2024-10-18T18:55:56.182-05:00  INFO 3678 --- [           main] com.saic.uclibdemo.App                   : Starting App v1.0 using Java 21.0.3 with PID 3678 (/home/daniel/workspace/Internship/uc/uc-lib-server.jar started by daniel in /home/daniel/workspace/Internship)
+2024-10-18T18:55:56.191-05:00  INFO 3678 --- [           main] com.saic.uclibdemo.App                   : No active profile set, falling back to 1 default profile: "default"
+2024-10-18T18:55:57.011-05:00  INFO 3678 --- [           main] o.s.c.i.support.PropertySourceProcessor  : Properties location [file:uclibdemo.properties] not resolvable: uclibdemo.properties (No such file or directory)
+2024-10-18T18:55:58.541-05:00  INFO 3678 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 9099 (http)
+2024-10-18T18:55:58.563-05:00  INFO 3678 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-10-18T18:55:58.563-05:00  INFO 3678 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.26]
+2024-10-18T18:55:58.618-05:00  INFO 3678 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-10-18T18:55:58.620-05:00  INFO 3678 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2171 ms
+2024-10-18T18:55:58.719-05:00  INFO 3678 --- [           main] uclibdemo                                : saved new Artifact fizz 78c9a63c-849a-4529-929b-ee3b18c3b092
+2024-10-18T18:55:58.719-05:00  INFO 3678 --- [           main] uclibdemo                                : saved new Artifact fizz ed4f8f5a-3aef-418d-8da1-08013e3d187c
+2024-10-18T18:55:58.719-05:00  INFO 3678 --- [           main] uclibdemo                                : saved new Artifact fizz 222d336d-99cf-423d-a704-b9d837b1f75f
+2024-10-18T18:55:58.720-05:00  INFO 3678 --- [           main] uclibdemo                                : saved new Artifact buzz bde57445-697f-4930-96eb-375797913e9f
+2024-10-18T18:55:58.720-05:00  INFO 3678 --- [           main] uclibdemo                                : saved new Artifact buzz fd44bbd3-ea8a-4d00-bcb2-ed1aa3327a86
+2024-10-18T18:55:58.720-05:00  INFO 3678 --- [           main] uclibdemo                                : saved new Artifact fizzbuzz 3cec0608-a961-4f87-8886-59d51027b038
+2024-10-18T18:55:58.720-05:00  INFO 3678 --- [           main] uclibdemo                                : saved new Artifact beep 0fb166b9-6511-4ff7-b6ad-5351fe4b6a05
+2024-10-18T18:55:58.721-05:00  INFO 3678 --- [           main] uclibdemo                                : saved new Artifact boop 3958e1ca-96e2-4a4d-b5bf-c3fc41b697bd
+2024-10-18T18:55:58.721-05:00  INFO 3678 --- [           main] uclibdemo                                : saved new Artifact boop 4f31f2aa-bc8d-4bdc-8f58-22a4e22d536f
+2024-10-18T18:55:58.721-05:00  INFO 3678 --- [           main] uclibdemo                                : saved new Artifact boop 11aec785-e18d-4c16-a173-1cd915592a51
+2024-10-18T18:55:59.846-05:00  INFO 3678 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 9099 (http) with context path '/'
+2024-10-18T18:55:59.883-05:00  INFO 3678 --- [           main] com.saic.uclibdemo.App                   : Started App in 4.304 seconds (process running for 5.124)
+2024-10-18T18:56:44.847-05:00  INFO 3678 --- [nio-9099-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-18T18:56:44.848-05:00  INFO 3678 --- [nio-9099-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-10-18T18:56:44.850-05:00  INFO 3678 --- [nio-9099-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-10-18T19:36:25.558-05:00  INFO 3678 --- [nio-9099-exec-7] uclibdemo                                : Login success
+2024-10-18T19:45:23.612-05:00  INFO 3678 --- [nio-9099-exec-9] uclibdemo                                : Login success
+2024-10-18T19:45:58.006-05:00  INFO 3678 --- [io-9099-exec-10] uclibdemo                                : Login success
+2024-10-18T19:49:43.218-05:00  INFO 3678 --- [nio-9099-exec-2] uclibdemo                                : Login success
+2024-10-18T19:50:04.168-05:00  INFO 3678 --- [nio-9099-exec-3] uclibdemo                                : Login success
+2024-10-18T19:51:11.781-05:00  INFO 3678 --- [nio-9099-exec-6] uclibdemo                                : Login success
+2024-10-18T19:51:48.769-05:00  INFO 3678 --- [nio-9099-exec-7] uclibdemo                                : Login success
+2024-10-18T19:54:42.494-05:00  INFO 3678 --- [io-9099-exec-10] uclibdemo                                : Login success
+2024-10-18T20:25:49.495-05:00  INFO 3678 --- [nio-9099-exec-3] uclibdemo                                : Login success

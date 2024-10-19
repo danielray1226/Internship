@@ -36,9 +36,11 @@ public class App {
 
 	}
 	private void init() {
+		//placeholder for any threads you wanna start so they start after app is fully constructed
+		
 	}
 	private static class Helper {
-		final static App app=initApp();
+		final static App app=initApp(); //load directory of the app
 		private static App initApp() {
 			App tmp=new App(AppContextListener.getRoot());
 			tmp.init();
@@ -65,7 +67,7 @@ public class App {
 	synchronized public JsonObject checkUserByCookie(String cookie) throws IOException {
 		// poor's man database
 		JsonElement cookies = JsonParser.parseString(new String(Files.readAllBytes(new File(root+"/WEB-INF/data/cookiesdb.json").toPath()), StandardCharsets.UTF_8));
-		String login=JsonUtils.getString(cookies, cookie);
+		String login=JsonUtils.getString(cookies, cookie); //gets value of attributes as a string
 		if (login!=null) {
 			JsonElement users = JsonParser.parseString(new String(Files.readAllBytes(new File(root+"/WEB-INF/data/usersdb.json").toPath()), StandardCharsets.UTF_8));
 			JsonObject userInfo = JsonUtils.getJsonObject(users, login);

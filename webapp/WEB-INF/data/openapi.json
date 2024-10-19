@@ -972,12 +972,13 @@
         }
     ],
     "servers": [
+		{
+			"url": "http://127.1.1.1:9099"
+		},
     	{
     		"url": "http://localhost:8000/TestAPI"
-    	},
-        {
-            "url": "http://example.com"
-        }
+    	}
+
     ],
     "tags": [
         {
