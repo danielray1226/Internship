@@ -3,11 +3,43 @@ import { useState } from "react";
 interface ParamProps {
   params: Array;
   onParamsChange?: (isValid: boolean, parameters: Object) => void;
+  advisoryParameters: Object;
 }
-function Parameters({ params, onParamsChange }: ParamProps) {
+
+function calculateAllValues(params: Array, advisoryParameters: Object) {
+  let ret = {};
+  for (let param of params) {
+    const name = param["name"];
+    let av = advisoryParameters[name];
+    if (av) ret[name] = av;
+  }
+  console.log(
+    "\n\n\nCALCULATED: ",
+    ret,
+    " for ",
+    JSON.stringify(params),
+    " and ",
+    JSON.stringify(advisoryParameters),
+    "\n\n\n"
+  );
+  return ret;
+}
+
+function Parameters({
+  params,
+  onParamsChange,
+  advisoryParameters,
+}: ParamProps) {
   console.log(params);
-  const [allValues, setAllValues] = useState({});
+  const [allValues, setAllValues] = useState(
+    //{}
+    calculateAllValues(params, advisoryParameters)
+  );
   if (!params) return <></>;
+
+  console.log(
+    "RENDER ADVISORY PARAMETERS: " + JSON.stringify(advisoryParameters)
+  );
 
   function classStyle(i: number) {
     const param = params[i];
@@ -66,6 +98,7 @@ function Parameters({ params, onParamsChange }: ParamProps) {
               className={classStyle(index)}
               id={"param" + index}
               key={"param" + index}
+              value={allValues[param["name"]]}
               onChange={(e) => {
                 onChange(param, e.target.value);
               }}
