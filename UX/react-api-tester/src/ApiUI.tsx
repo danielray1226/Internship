@@ -237,17 +237,23 @@ function ApiUI() {
           <br />
           <div className="container">
             {/*<Component to display neatly =openAPI =severCallResult/>*/}
-            <div className="container"></div>
             {serverCallResult && serverCallParameters.path == myPath && (
-              <ServerResults
-                key={JSON.stringify(serverCallParameters)}
-                result={serverCallResult}
-                path={serverCallParameters.path}
-                httpMethod={serverCallParameters.httpMethod}
-                onRowClicked={onResultRowClicked}
-              />
+              <>
+                <ServerResults
+                  key={JSON.stringify(serverCallParameters)}
+                  result={serverCallResult}
+                  path={serverCallParameters.path}
+                  httpMethod={serverCallParameters.httpMethod}
+                  onRowClicked={onResultRowClicked}
+                />
+                <br />
+                <h2>Raw Results</h2>
+                {JSON.stringify(serverCallResult)}
+              </>
             )}
           </div>
+
+          <div className="container"></div>
         </>
       )}
 

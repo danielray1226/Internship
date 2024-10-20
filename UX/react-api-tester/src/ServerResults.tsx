@@ -33,7 +33,7 @@ export default function ServerResults({
   console.log("Got ref: ", ref, "for ", path, httpMethod, result["statusCode"]);
 
   let resultData = result["data"];
-  resultData["next_cursor"] = "zzzz";
+  //resultData["next_cursor"] = "zzzz";
 
   console.log("Need to render: ", JSON.stringify(resultData));
 
