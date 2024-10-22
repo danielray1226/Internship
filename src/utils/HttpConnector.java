@@ -53,7 +53,7 @@ import org.apache.hc.core5.util.Timeout;
 
 @SuppressWarnings("deprecation")
 public class HttpConnector {
-	final SSLContextBuilder sslBuilder=SSLContexts.custom();
+	final SSLContextBuilder sslBuilder=SSLContexts.custom(); //ignores invalid ssl certificates
 	final SSLContext sslContext;
 	final SSLConnectionSocketFactory sslsf;
 	final Registry<ConnectionSocketFactory> socketFactoryRegistry;
@@ -77,13 +77,13 @@ public class HttpConnector {
 	}
 	
 	@SuppressWarnings("deprecation")
-	final PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+	final PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry); //passes always-trust configuration
 
 	{
-		connManager.setMaxTotal(200);
-		connManager.setDefaultMaxPerRoute(100);
-		connManager.setDefaultConnectionConfig(ConnectionConfig.custom().setConnectTimeout(Timeout.ofSeconds(30))
-				.setSocketTimeout(Timeout.ofSeconds(30)).setValidateAfterInactivity(TimeValue.ofSeconds(10))
+		connManager.setMaxTotal(200); //200 connections available at all times
+		connManager.setDefaultMaxPerRoute(100); //up to 100 per-host-ports 
+		connManager.setDefaultConnectionConfig(ConnectionConfig.custom().setConnectTimeout(Timeout.ofSeconds(30)) //will disconnect if not connected to after 30 seconds
+				.setSocketTimeout(Timeout.ofSeconds(30)).setValidateAfterInactivity(TimeValue.ofSeconds(10)) //if sockets dont respond in 30 seconds will disconnect,
 				.setTimeToLive(TimeValue.ofHours(1)).build());
 	}
 	final ConnectionReuseStrategy connectionReuseStrategy = new ConnectionReuseStrategy() {
@@ -92,10 +92,10 @@ public class HttpConnector {
 			return true;
 		}
 	};
-	final CloseableHttpClient httpClient = HttpClients.custom().setConnectionReuseStrategy(connectionReuseStrategy)
+	final CloseableHttpClient httpClient = HttpClients.custom().setConnectionReuseStrategy(connectionReuseStrategy) //copied from example
 			.setConnectionManager(connManager).build();
 	
-	public FullHttpResponse callGet(String url, BasicHeader... headers) {
+	public FullHttpResponse callGet(String url, BasicHeader... headers) { //takes url and array of headers to be sent
 		FullHttpResponse fullResponse = new FullHttpResponse();
 		try {
 			final HttpGet httpget = new HttpGet(url);
@@ -116,7 +116,7 @@ public class HttpConnector {
 					hasAccept = true;
 			}
 			if (!hasAccept)
-				httpget.addHeader(new BasicHeader("Accept", "*/*"));
+				httpget.addHeader(new BasicHeader("Accept", "*/*")); //accepts all content types back
 
 			// Execution context can be customized locally.
 			// Contextual attributes set the local context level will take
@@ -142,7 +142,7 @@ public class HttpConnector {
 	public FullHttpResponse callPost(String url, String contentType, byte[] payload, BasicHeader... headers) {
 		return callMethod("post", url, contentType, payload, headers); 
 	}
-	public FullHttpResponse callMethod(String method, String url, String contentType, byte[] payload, BasicHeader... headers) {
+	public FullHttpResponse callMethod(String method, String url, String contentType, byte[] payload, BasicHeader... headers) { //takes what kind of method (post/get/etc), the url, and finally contenttype/payload.
 		FullHttpResponse fullResponse = new FullHttpResponse();
 		try {
 			BasicHttpEntity entity = new BasicHttpEntity(new ByteArrayInputStream(payload),

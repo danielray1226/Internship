@@ -43,7 +43,7 @@ public class LoginServlet extends HttpServlet {
 		if (userInfo == null || appCookie == null) {
 			// First time user, or unknown cookie
 			appCookie = new Cookie(App.getApp().getAppCookieName(), UUID.randomUUID().toString());
-			appCookie.setHttpOnly(false); // should we allow js to access it?
+			appCookie.setHttpOnly(true); // should we allow js to access it?
 			appCookie.setMaxAge(365 * 24 * 3600);
 			response.addCookie(appCookie); // Add it back to the response
 		}

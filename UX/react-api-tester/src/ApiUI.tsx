@@ -3,6 +3,7 @@ import MyButton from "./components/MyButton";
 import { callApi, loadOpenApi } from "./consts";
 import { useEffect, useState } from "react";
 import Parameters from "./Parameters";
+import ServerResults from "./ServerResults";
 
 function ApiUI() {
   const [openApi, setOpenApi] = useState();
@@ -13,14 +14,17 @@ function ApiUI() {
   const [paramsValid, setParamsValid] = useState(true);
   const [parameters, setParameters] = useState({});
   const [serverCallResult, setServerCallResult] = useState();
+  const [serverCallParameters, setServerCallParameters] = useState();
   const [serverCallError, setServerCallError] = useState();
   const [serverIsCalled, setServerIsCalled] = useState(false);
+
+  const [advisoryParameters, setAdvisoryParameters] = useState({});
 
   function onPathSelected(heading: string, i: number, path: string) {
     setPath(path);
     setHttpMethod(null);
     setParameters({});
-    setServerCallResult(null);
+    //setServerCallResult(null);
     setServerCallError(null);
     setServerIsCalled(false);
   }
@@ -31,7 +35,7 @@ function ApiUI() {
     setServerIsCalled(false);
     setServerIsCalled(false);
     setServerCallError(null);
-    setServerCallResult(null);
+    //setServerCallResult(null);
   }
   function onServerUrlSelected(heading: string, i: number, url: string) {
     setApiServerUrl(url);
@@ -45,9 +49,31 @@ function ApiUI() {
     setOpenApiError(ex);
   }
   function onParamsChange(valid: boolean, parameters: Object) {
-    //console.log("On Parameter Change: is valid: ", valid, ", got parameters as: ", parameters);
+    //console.log("On Parameter Change: is valid: ", valid, ", got parameters as: ", parameters)
+
     setParamsValid(valid);
     setParameters(parameters);
+  }
+
+  function onResultRowClicked(path: string, property: string, row: Object) {
+    setAdvisoryParameters((prev) => {
+      let advise = { ...prev };
+      for (const [key, value] of Object.entries(row)) {
+        if (path == "/projects" && key == "id") {
+          advise["project"] = value;
+        } else if (key == "next_cursor") {
+          advise["cursor"] = value;
+        } else {
+          advise[key] = value;
+        }
+      }
+      console.log(
+        "\n\n\n\nAdded advisory parameters: ",
+        JSON.stringify(advise),
+        "\n\n\n\n"
+      );
+      return advise;
+    });
   }
 
   useEffect(() => {
@@ -111,6 +137,16 @@ function ApiUI() {
     setServerIsCalled(true);
     setServerCallError(null);
     setServerCallResult(null);
+    // lets save server call parameters
+    const callParams = {
+      url: myServerUrl,
+      path: myPath,
+      httpMethod: myHttpMethod,
+      parameters: parameters,
+    };
+    setServerCallParameters(callParams);
+    //setServerCallParameters(JSON.stringify(callParams));
+
     callApi(
       onApiServerCallResult /* onData?: (data: Object) => void,*/,
       onApiServerCallError, //onError?: (ex) => void,
@@ -156,6 +192,7 @@ function ApiUI() {
                   key={"params-" + myPath + "-" + myHttpMethod}
                   params={methodObjectParameters}
                   onParamsChange={onParamsChange}
+                  advisoryParameters={advisoryParameters}
                 />
               </div>
             </>
@@ -185,27 +222,42 @@ function ApiUI() {
             )}
         </>
       )}
-      {serverIsCalled && (
+      {serverCallParameters && (
         <>
           <br />
           <div className="container">
             <ul className="list-group">
-              <li className="list-group-item">Calling {myServerUrl}</li>
-              <li className="list-group-item">Path {myPath}</li>
-              <li className="list-group-item">Method {myHttpMethod}</li>
+              <li className="list-group-item">URL: {myServerUrl}</li>
+              <li className="list-group-item">Path: {myPath}</li>
+              <li className="list-group-item">Method: {myHttpMethod}</li>
               <li className="list-group-item">
                 With parameters {JSON.stringify(parameters)}
               </li>
             </ul>
           </div>
-        </>
-      )}
-      {serverCallResult && (
-        <>
           <br />
-          <div className="container">{JSON.stringify(serverCallResult)}</div>
+          <div className="container">
+            {/*<Component to display neatly =openAPI =severCallResult/>*/}
+            {serverCallResult && serverCallParameters.path == myPath && (
+              <>
+                <ServerResults
+                  key={JSON.stringify(serverCallParameters)}
+                  result={serverCallResult}
+                  path={serverCallParameters.path}
+                  httpMethod={serverCallParameters.httpMethod}
+                  onRowClicked={onResultRowClicked}
+                />
+                <br />
+                <h2>Raw Results</h2>
+                {JSON.stringify(serverCallResult)}
+              </>
+            )}
+          </div>
+
+          <div className="container"></div>
         </>
       )}
+
       {serverCallError && (
         <>
           <br />
@@ -216,4 +268,12 @@ function ApiUI() {
   );
 }
 //<PathSelector path={myPath} />
+/*
+    const callParams = {
+      url: myServerUrl,
+      path: myPath,
+      httpMethod: myHttpMethod,
+      parameters: parameters,
+    };
+*/
 export default ApiUI;

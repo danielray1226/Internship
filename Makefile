@@ -1,13 +1,20 @@
-where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
+#Why not maven?
+#Most of this is compiling/packaging javascript and restarting tomcat/vite/chromium, maven is for compiling java and tracking dependancies for java libraries.
+#Makefile was more suitable as a result for adhoc scripts. (custom scripts/commands).
+
+where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST)) 
 THIS_MAKEFILE := $(call where-am-i)
 #$(info $(THIS_MAKEFILE))
+#method to find location of the current makefile
 ROOT := $(dir $(THIS_MAKEFILE))
-JAVAC?=javac
+#directory of current makefil
+JAVAC?=javac 
 SRC_JAVA:=$(ROOT)/src
-SRC_ROOTS:= $(SRC_JAVA)
 JVM_VERSION:=11
 JAVA_BUILD:=$(ROOT)/webapp/WEB-INF/classes
+#where to put class files
 ALL_LIBS_LIST:=$(shell find $(ROOT)/webapp/WEB-INF/lib $(ROOT)/SERVER -name '*.jar' -printf '%p:')
+#list of all .jar for tomcat library and web-inf libraries
 #$(info "All Libs List " $(ALL_LIBS_LIST))
 
 all: war
@@ -47,10 +54,14 @@ war:  java-compile ux
 	mkdir -p $(ROOT)/target
 	rm -rf $(ROOT)/local_tomcat/webapps
 	mkdir -p $(ROOT)/local_tomcat/webapps
-	cd $(ROOT)/webapp && zip -qr $(ROOT)/target/ROOT.war .
+	cd $(ROOT)/webapp && zip -rq $(ROOT)/target/ROOT.war .
 	cp $(ROOT)/target/ROOT.war $(ROOT)/local_tomcat/webapps/
 
-local_tomcat: war
+local_tomcat: war uc
 	$(ROOT)/start_local_tomcat.sh
+	
+uc:
+	@bash -c 'pid=`fuser 9099/tcp 2>/dev/null | tr -d '[:blank:]'` && test -z "$$pid" || { echo "killing $$pid"; kill -SIGKILL $$pid; }'
+	java -jar $(ROOT)/uc/uc-lib-server.jar >$(ROOT)/uc/uc.log 2>&1 &
 
-.PHONY: all ux java-compile war local_tomcat
+.PHONY: all uc ux java-compile war local_tomcat #Makefile assumes all targets are files, .PHONY ensures that it will be re-executed

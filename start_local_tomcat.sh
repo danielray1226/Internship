@@ -11,7 +11,8 @@ mkdir -p ${MYDIR}/local_tomcat/temp/
 mkdir -p ${MYDIR}/local_tomcat/work/
 
 pid=`fuser 8000/tcp 2>/dev/null | tr -d '[:blank:]'` && test -z "$pid" || { echo "killing $pid"; kill -SIGKILL $pid; }
-
+# Didn't want to do apache's complex config startup (catalina.sh is very unnecessarily complex), 
+#so I replaced the runtime ps -ef from linux to make a generic script, -Dcatalina.base/home are set to the appropriate classpath/directories/etc
 java -Dcatalina.base=${MYDIR}/local_tomcat \
 	-Dcatalina.home=${MYDIR}/SERVER/apache-tomcat-9.0.48 \
 	--add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED \
@@ -20,3 +21,4 @@ java -Dcatalina.base=${MYDIR}/local_tomcat \
 	-Dfile.encoding=UTF-8 \
 	-classpath "${CLASSPATH}" \
 	org.apache.catalina.startup.Bootstrap start
+
