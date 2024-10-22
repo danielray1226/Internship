@@ -55,7 +55,10 @@ function TableWithClickableRow({ name, headers, rows, onRowClicked }: Props) {
                     rowSelected(rowIndex);
                   }}
                 >
-                  {row[h]}
+                  {Array.isArray(row[h]) ||
+                  (typeof row[h] === "object" && row[h] !== null)
+                    ? JSON.stringify(row[h])
+                    : "" + row[h]}
                 </td>
               ))}
             </tr>

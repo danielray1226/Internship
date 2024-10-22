@@ -1,40 +1,40 @@
+import { getResultHeadersAndRows } from "./consts";
 import TableWithClickableRow from "./TableWithClickableRow";
 
 interface Props {
   property: string;
   def: Object;
   data: Object;
-  openApi: Object;
+  onRowClicked?: (row: Object) => void;
 }
 
-export default function RenderResults({ property, def, data, openApi }: Props) {
-  let headers = ["id", "label", "c3", "c4"];
-  let rows = [
-    { id: "hi", label: "there" },
-    { id: "hi again" },
-    { id: "hi one more time", label: "Blah", c4: "there one more time" },
-  ];
-  function onData(data: Object) {
-    console.log("Data is: " + JSON.stringify(data));
-  }
+export default function RenderResults({
+  property,
+  def,
+  data,
+  onRowClicked,
+}: Props) {
+  const [headers, rows] = getResultHeadersAndRows(property, def, data);
 
   return (
     <>
       <TableWithClickableRow
-        name="Hello table"
+        name={property}
         headers={headers}
         rows={rows}
-        onRowClicked={onData}
+        onRowClicked={onRowClicked}
       />
-      <TableWithClickableRow
+    </>
+  );
+  /*
+        <TableWithClickableRow
         name="next_cursor"
         headers={["next_cursor"]}
         rows={[{ next_cursor: "bzzzz" }]}
         onRowClicked={onData}
       />
-    </>
-  );
-  /*return (
+
+  return (
     <div>
       Property: {property}
       <br />
