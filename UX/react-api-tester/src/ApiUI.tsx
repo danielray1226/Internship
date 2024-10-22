@@ -50,6 +50,7 @@ function ApiUI() {
   }
   function onParamsChange(valid: boolean, parameters: Object) {
     //console.log("On Parameter Change: is valid: ", valid, ", got parameters as: ", parameters)
+
     setParamsValid(valid);
     setParameters(parameters);
   }
@@ -83,7 +84,7 @@ function ApiUI() {
 
   if (openApiError)
     return <p>Error loading open api: {openApiError.message}</p>;
-  if (!openApi) return <p>Loading OpenAPI definitions ...</p>;
+  if (!openApi) return <p>Loaded Empty OpenAPI...</p>;
 
   // we got open api, lets find out all the paths
   const pathsObject = openApi["paths"];

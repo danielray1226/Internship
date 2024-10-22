@@ -15,3 +15,5 @@ UX/react-api-tester/.vscode
 UX/react-api-tester/src/DanielPlayground.tsx
 !UX/react-api-tester/.vscode/extensions.json
 uc/uc.log
+webapp/WEB-INF/data/cookiesdb.json
+webapp/index.html

@@ -42,17 +42,10 @@ function Parameters({
   );
 
   function classStyle(i: number) {
+    
     const param = params[i];
     const required = param["required"];
     const name = param["name"];
-    console.log(
-      "calculating style for index ",
-      i,
-      ", parameter ",
-      params[i],
-      ", required param ",
-      param.required
-    );
     const currentValue = allValues[name];
     var style = "form-control";
     if (!currentValue && required) style += " is-invalid";
@@ -72,7 +65,8 @@ function Parameters({
       const extra = {};
       extra[param.name] = value;
       const newAllVals = { ...allValues, ...extra };
-      console.log("Params value: " + newAllVals);
+      //console.log("Params value: " + newAllVals);
+      //console.log("all parameters are ", newAllVals);
       setAllValues(newAllVals);
       if (onParamsChange) {
         onParamsChange(isValid(), newAllVals);
